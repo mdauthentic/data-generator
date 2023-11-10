@@ -9,7 +9,7 @@ pub trait Provider: ProviderClone {
 /// The clone implementation part of this code is copied from:
 /// https://stackoverflow.com/questions/30353462/how-to-clone-a-struct-storing-a-boxed-trait-object
 /// I can also use https://github.com/dtolnay/dyn-clone as a replacement
-trait ProviderClone {
+pub trait ProviderClone {
     fn clone_box(&self) -> Box<dyn Provider>;
 }
 
