@@ -2,7 +2,10 @@ pub mod numbers;
 pub mod ratings;
 pub mod domains;
 pub mod currency;
+pub mod name;
+pub mod bank;
 
+use std::fmt::{Display, Formatter};
 use rand::distributions::{Distribution, Uniform};
 use rand::{thread_rng, Rng};
 
@@ -11,10 +14,24 @@ use rand::{thread_rng, Rng};
 pub enum Value {
     Null,
     Bool(bool),
-    IntegersNum(i64),
-    FloatNum(f64),
+    Number(f64),
     String(String),
     Array(Vec<Value>),
+}
+
+impl Display for Value {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Value::Null => write!(f, ""),
+            Value::Bool(b) => write!(f, "{}", b.to_string()),
+            Value::Number(n) => write!(f, "{}", n.to_string()),
+            Value::String(s) => write!(f, "{}", s),
+            Value::Array(arr) => {
+                let result: Vec<String> = arr.into_iter().map(|x| x.to_string()).collect();
+                write!(f, "[{}]", result.join(","))
+            }
+        }
+    }
 }
 
 

@@ -2,12 +2,9 @@ use crate::model::Value;
 use crate::provider::Provider;
 
 #[derive(Debug, Clone)]
-pub struct Currency {
-    pub start: Option<f64>,
-    pub end: Option<f64>,
-}
+pub struct Bank {}
 
-impl Provider for Currency {
+impl Provider for Bank {
     fn next(&mut self) -> Value {
         todo!()
     }

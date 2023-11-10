@@ -10,16 +10,10 @@ pub struct RandomNumber {
     pub(crate) end: Option<i64>,
 }
 
-impl RandomNumber {
-    fn new(&self) -> Self {
-        todo!()
-    }
-}
-
 impl Provider for RandomNumber {
     fn next(&mut self) -> Value {
         let value = random_num(self.start, self.end);
-        Value::IntegersNum(value)
+        Value::Number(value as f64)
     }
 }
 
@@ -34,6 +28,6 @@ pub struct RandomFloat {
 impl Provider for RandomFloat {
     fn next(&mut self) -> Value {
         let value = random_float_in_range(self.start, self.end);
-        Value::FloatNum(value)
+        Value::Number(value)
     }
 }
