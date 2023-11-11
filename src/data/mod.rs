@@ -1,4 +1,4 @@
-pub mod domains;
-pub mod currency;
+pub mod banking;
+pub mod general;
+pub mod internet;
 pub mod name;
-pub mod bank;

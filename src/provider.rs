@@ -3,6 +3,8 @@ use std::fmt::{Debug, Error, Formatter};
 use crate::model::Value;
 
 pub trait Provider: ProviderClone {
+    /// A call to the `next()` function is meant to generate the next random value for the provider
+    /// This function is implemented by all struct that implement the `Provider` trait.
     fn next(&mut self) -> Value;
 }
 

@@ -1,14 +1,13 @@
-pub mod numbers;
-pub mod ratings;
-pub mod domains;
-pub mod currency;
+pub mod banking;
+pub mod datatypes;
+pub mod internet;
 pub mod name;
-pub mod bank;
+pub mod numbers;
+pub mod word;
 
-use std::fmt::{Display, Formatter};
-use rand::distributions::{Distribution, Uniform};
+use rand::distributions::{Alphanumeric, DistString, Distribution, Uniform};
 use rand::{thread_rng, Rng};
-
+use std::fmt::{Display, Formatter};
 
 #[derive(PartialEq, Debug, Clone)]
 pub enum Value {
@@ -34,10 +33,16 @@ impl Display for Value {
     }
 }
 
-
+/// Select random value from an array
 pub fn random_data<T: Clone>(arr: &[T]) -> T {
     let random_data_index: usize = thread_rng().gen_range(0..arr.len());
     arr[random_data_index].clone()
+}
+
+/// Select random value from a vector
+pub fn random_data_from_vec<T: Clone>(vc: Vec<T>) -> T {
+    let random_data_index: usize = thread_rng().gen_range(0..vc.len());
+    vc[random_data_index].clone()
 }
 
 pub fn random_num(start: Option<i64>, end: Option<i64>) -> i64 {
@@ -56,4 +61,9 @@ pub fn random_uniform_num_in_range(start: Option<i64>, end: Option<i64>) -> i64 
     let between = Uniform::from(start.unwrap_or_default()..=end.unwrap_or(1000000));
     let mut rng = thread_rng();
     between.sample(&mut rng)
+}
+
+pub fn random_string(maxlength: Option<u8>) -> String {
+    let mut rng = thread_rng();
+    Alphanumeric.sample_string(&mut rng, maxlength.unwrap_or(10) as usize)
 }

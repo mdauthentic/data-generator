@@ -9,12 +9,11 @@ User will define the schema, a `.sdl` as follows;
 
 ```
 model test_data {
-    col1: int(1..100),
+    col1: int(1 -> 100),
     col2: str {
-        provider  := @name,
         default   := one_of('my_name', 'another_str')
     },
-    col3: currency(1..200) {
+    col3: currency(1 until 200) {
         provider := @currency,
         default  := '$3.40'
     },
@@ -36,8 +35,8 @@ model test_data {
 
 ## Supported Types
 The supported types are as follows;
-- `int` or `int(0..10)`: where `0..10` represents the required rannge that the generated number must not exceed
-- `float`: floating point number
+- `int` or `int(0 until 10) or int(0 -> 10)`: where `0 until 10` represents the required rannge that the generated number must not exceed
+- `float(0 until 10)`: floating point number
 - `str`: a combination of alphanumeric characters
 - `bool`: a `true` or `false`
 - `uuid`: this represents a `uuid`
