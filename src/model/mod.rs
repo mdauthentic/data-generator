@@ -5,6 +5,12 @@ pub mod name;
 pub mod numbers;
 pub mod word;
 
+use crate::model::banking::{Bank, Currency};
+use crate::model::internet::{DomainName, Email};
+use crate::model::name::Name;
+use crate::model::numbers::{RandomFloat, RandomNumber};
+use crate::model::word::{EmptyWord, Word};
+use crate::provider::Provider;
 use rand::distributions::{Alphanumeric, DistString, Distribution, Uniform};
 use rand::{thread_rng, Rng};
 use std::fmt::{Display, Formatter};
@@ -30,6 +36,29 @@ impl Display for Value {
                 write!(f, "[{}]", result.join(","))
             }
         }
+    }
+}
+
+pub fn provider_type(provider: &str, start: Option<f64>, end: Option<f64>) -> Box<dyn Provider> {
+    match provider {
+        "name" => Box::new(Name {}),
+        "word" => Box::new(Word {}),
+        "int" => Box::new(RandomNumber {
+            start: start.into(),
+            end: end.into(),
+        }),
+        "float" => Box::new(RandomFloat {
+            start: start,
+            end: end,
+        }),
+        "currency" => Box::new(Currency {
+            start: start.into(),
+            end: end.into(),
+        }),
+        "bank" => Box::new(Bank {}),
+        "domain" => Box::new(DomainName {}),
+        "email" => Box::new(Email {}),
+        _ => Box::new(EmptyWord {}),
     }
 }
 

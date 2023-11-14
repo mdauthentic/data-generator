@@ -11,6 +11,15 @@ impl Provider for Word {
 }
 
 #[derive(Debug, Clone)]
+pub struct EmptyWord {}
+
+impl Provider for EmptyWord {
+    fn next(&mut self) -> Value {
+        Value::String("".to_string())
+    }
+}
+
+#[derive(Debug, Clone)]
 pub struct WordTitle {}
 
 impl Provider for WordTitle {
