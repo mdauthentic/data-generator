@@ -9,7 +9,7 @@ use crate::model::banking::{Bank, Currency};
 use crate::model::internet::{DomainName, Email};
 use crate::model::name::Name;
 use crate::model::numbers::{RandomFloat, RandomNumber};
-use crate::model::word::{EmptyWord, Word};
+use crate::model::word::{EmptyString, Strings};
 use crate::provider::Provider;
 use rand::distributions::{Alphanumeric, DistString, Distribution, Uniform};
 use rand::{thread_rng, Rng};
@@ -28,37 +28,35 @@ impl Display for Value {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
             Value::Null => write!(f, ""),
-            Value::Bool(b) => write!(f, "{}", b.to_string()),
-            Value::Number(n) => write!(f, "{}", n.to_string()),
+            Value::Bool(b) => write!(f, "{}", b),
+            Value::Number(n) => write!(f, "{}", n),
             Value::String(s) => write!(f, "{}", s),
             Value::Array(arr) => {
-                let result: Vec<String> = arr.into_iter().map(|x| x.to_string()).collect();
+                let result: Vec<String> = arr.iter().map(|x| x.to_string()).collect();
                 write!(f, "[{}]", result.join(","))
             }
         }
     }
 }
 
-pub fn provider_type(provider: &str, start: Option<f64>, end: Option<f64>) -> Box<dyn Provider> {
+pub fn string_to_provider(
+    provider: &str,
+    start: Option<f64>,
+    end: Option<f64>,
+) -> Box<dyn Provider> {
     match provider {
         "name" => Box::new(Name {}),
-        "word" => Box::new(Word {}),
+        "word" => Box::new(Strings {}),
         "int" => Box::new(RandomNumber {
-            start: start.into(),
-            end: end.into(),
+            start: start.map(|s| s as i64),
+            end: end.map(|e| e as i64),
         }),
-        "float" => Box::new(RandomFloat {
-            start: start,
-            end: end,
-        }),
-        "currency" => Box::new(Currency {
-            start: start.into(),
-            end: end.into(),
-        }),
+        "float" => Box::new(RandomFloat { start, end }),
+        "currency" => Box::new(Currency { start, end }),
         "bank" => Box::new(Bank {}),
         "domain" => Box::new(DomainName {}),
         "email" => Box::new(Email {}),
-        _ => Box::new(EmptyWord {}),
+        _ => Box::new(EmptyString {}),
     }
 }
 
@@ -95,4 +93,19 @@ pub fn random_uniform_num_in_range(start: Option<i64>, end: Option<i64>) -> i64 
 pub fn random_string(maxlength: Option<u8>) -> String {
     let mut rng = thread_rng();
     Alphanumeric.sample_string(&mut rng, maxlength.unwrap_or(10) as usize)
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::model::Value::String;
+    use std::any::Any;
+
+    #[test]
+    fn test_provider_type() {
+        let expected = String("".to_string()).type_id();
+        let actual = string_to_provider("name", None, None).next().type_id();
+
+        assert_eq!(actual, expected)
+    }
 }

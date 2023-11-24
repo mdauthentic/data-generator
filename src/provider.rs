@@ -1,6 +1,5 @@
-
-use std::fmt::{Debug, Error, Formatter};
 use crate::model::Value;
+use std::fmt::{Debug, Error, Formatter};
 
 pub trait Provider: ProviderClone {
     /// A call to the `next()` function is meant to generate the next random value for the provider
@@ -16,7 +15,9 @@ pub trait ProviderClone {
 }
 
 impl<T> ProviderClone for T
-    where T: 'static + Provider + Clone {
+where
+    T: 'static + Provider + Clone,
+{
     fn clone_box(&self) -> Box<dyn Provider> {
         Box::new(self.clone())
     }
@@ -29,8 +30,7 @@ impl Clone for Box<dyn Provider> {
     }
 }
 
-/// for logging purposes
-pub fn print_type_of<T>(_: &T) -> String {
+pub fn type_of<T>(_: &T) -> String {
     std::any::type_name::<T>().to_string()
 }
 
@@ -42,6 +42,6 @@ impl Debug for dyn Provider {
 
 impl ToString for dyn Provider {
     fn to_string(&self) -> String {
-        format!("Provider[{:?}]", print_type_of(&self))
+        format!("Provider[{:?}]", type_of(&self))
     }
 }

@@ -4,24 +4,28 @@ use crate::provider::Provider;
 #[derive(Debug, Clone)]
 pub struct Field {
     pub field: String,
-    pub data_type: FieldType,
-    pub provider: Box<dyn Provider>,
-    pub range: Option<DataRange>,
+    pub type_info: TypeInfo,
+    pub provider: Option<Box<dyn Provider>>,
     pub default: Option<DefaultValue>,
     pub maxlength: Option<u8>,
 }
 
 impl Field {
-    fn new(field: String, data_type: FieldType, provider: Box<dyn Provider>) -> Self {
+    fn new(field: String, type_info: TypeInfo, provider: Option<Box<dyn Provider>>) -> Self {
         Field {
             field,
-            data_type,
+            type_info,
             provider,
-            range: None,
             default: None,
             maxlength: None,
         }
     }
+}
+
+#[derive(PartialEq, Debug, Clone)]
+pub struct TypeInfo {
+    pub data_type: FieldType,
+    pub range: Option<DataRange>,
 }
 
 #[derive(PartialEq, Debug, Clone)]
@@ -43,7 +47,13 @@ pub struct DataRange {
 }
 
 #[derive(PartialEq, Debug, Clone)]
-pub enum DefaultValue {
-    OneOf(Vec<Value>),
-    ManyOf(Vec<Value>),
+pub struct DefaultValue {
+    pub choice: DefaultOption,
+    pub values: Vec<Value>,
+}
+
+#[derive(PartialEq, Debug, Clone)]
+pub enum DefaultOption {
+    OneOf,
+    ManyOf,
 }

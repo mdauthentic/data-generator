@@ -1,5 +1,6 @@
 [package]
 name = "data-generator"
+authors = ["Muideen Lawal <muideen.lawal320@gmail.com>"]
 version = "0.1.0"
 edition = "2021"
 

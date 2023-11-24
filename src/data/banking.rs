@@ -1,8 +1,8 @@
 #[allow(dead_code)]
-pub static CURRENCY_SYMBOLS: &'static [&str] = &[ "₦", "€", "$", "£", "¥", "₣", "₹", "₱", "₽" ];
+pub static CURRENCY_SYMBOLS: &[&str] = &[ "₦", "€", "$", "£", "¥", "₣", "₹", "₱", "₽" ];
 
 #[allow(dead_code)]
-pub static BANKS: &'static [&str] = &[
+pub static BANKS: &[&str] = &[
     "BNP Paribas",
     "Societe Generale",
     "Credit Agricole Group",

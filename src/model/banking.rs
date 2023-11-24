@@ -2,7 +2,7 @@ use crate::data::banking::{BANKS, CURRENCY_SYMBOLS};
 use crate::model::{random_data, random_float_in_range, Value};
 use crate::provider::Provider;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Currency {
     pub start: Option<f64>,
     pub end: Option<f64>,
@@ -16,13 +16,12 @@ impl Provider for Currency {
     }
 }
 
-
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Bank {}
 
 impl Provider for Bank {
     fn next(&mut self) -> Value {
-        let bank = format!("{}", random_data(BANKS));
+        let bank = random_data(BANKS).to_string();
         Value::String(bank)
     }
 }

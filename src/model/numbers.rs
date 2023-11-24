@@ -1,7 +1,7 @@
 use crate::model::{random_float_in_range, random_num, Value};
 use crate::provider::Provider;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct RandomNumber {
     /// The start inclusively.
     pub start: Option<i64>,
@@ -16,7 +16,7 @@ impl Provider for RandomNumber {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct RandomFloat {
     /// The start inclusively.
     pub start: Option<f64>,

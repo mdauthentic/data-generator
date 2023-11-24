@@ -59,4 +59,5 @@ rust-project.json
 .idea/modules.xml
 .idea/vcs.xml
 
+/src/backup/
 # End

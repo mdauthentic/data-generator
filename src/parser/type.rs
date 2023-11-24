@@ -1,13 +1,26 @@
-use crate::model::datatypes::{DataRange, FieldType};
-use crate::parser::{closing_bracket, open_bracket, ParseResult, Span};
-use crate::provider::Provider;
+use crate::model::datatypes::{DataRange, FieldType, TypeInfo};
+use crate::parser::{closing_bracket, open_bracket, ws_sep_colon, ParseResult, Span};
+
 use nom::branch::alt;
 use nom::bytes::complete::tag;
 use nom::character::complete::multispace0;
-use nom::combinator::{map, value};
+use nom::combinator::{map, opt, value};
 use nom::error::context;
 use nom::number::complete::recognize_float;
 use nom::sequence::{delimited, separated_pair, tuple};
+
+pub fn type_info(input: Span) -> ParseResult<TypeInfo> {
+    context(
+        "type info",
+        map(
+            separated_pair(type_identifier, ws_sep_colon, opt(range_identifier)),
+            |(typ, rng)| TypeInfo {
+                data_type: typ,
+                range: rng,
+            },
+        ),
+    )(input)
+}
 
 /// Parse all data type
 pub fn type_identifier(input: Span) -> ParseResult<FieldType> {
@@ -64,20 +77,6 @@ pub fn range_identifier(input: Span) -> ParseResult<DataRange> {
             },
         ),
     )(input)
-}
-
-/*pub fn default_value(input: Span) -> ParseResult<DefaultValue> {
-    context(
-        "default value",
-        tuple((
-            alt((tag("one_of"), tag("many_of"))),
-            delimited(open_bracket, many1(), closing_bracket),
-        )),
-    )
-}*/
-
-pub fn provider(input: Span) -> ParseResult<Box<dyn Provider>> {
-    todo!()
 }
 
 #[cfg(test)]

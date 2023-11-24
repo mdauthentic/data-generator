@@ -2,7 +2,7 @@ use crate::data::internet::{DOMAIN_EXT, EMAIL_EXT};
 use crate::model::{random_data, random_string, Value};
 use crate::provider::Provider;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Domain {}
 
 impl Provider for Domain {
@@ -12,19 +12,19 @@ impl Provider for Domain {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct DomainName {}
 
 impl Provider for DomainName {
     fn next(&mut self) -> Value {
         let domain = random_string(Some(12));
         let ext = Domain {}.next();
-        let domain_name = format!("{}.{}", domain, ext.to_string());
+        let domain_name = format!("{}.{}", domain, ext);
         Value::String(domain_name)
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Email {}
 
 impl Provider for Email {

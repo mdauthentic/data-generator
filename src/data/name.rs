@@ -1,7 +1,7 @@
 // Name data curled from https://github.com/joke2k/faker/blob/master/faker/providers/person/fr_FR/__init__.py
 
 #[allow(dead_code)]
-pub static FIRST_NAME_M: &'static [&str] = &[
+pub static FIRST_NAME_M: &[&str] = &[
     "Adrien",
     "Aimé",
     "Alain",
@@ -94,7 +94,7 @@ pub static FIRST_NAME_M: &'static [&str] = &[
 
 
 #[allow(dead_code)]
-pub static FIRST_NAME_F: &'static [&str] = &[
+pub static FIRST_NAME_F: &[&str] = &[
     "Adélaïde",
     "Adèle",
     "Adrienne",
@@ -230,7 +230,7 @@ pub static FIRST_NAME_F: &'static [&str] = &[
 
 
 #[allow(dead_code)]
-pub static LAST_NAME: &'static [&str] = &[
+pub static LAST_NAME: &[&str] = &[
     "Martin",
     "Bernard",
     "Thomas",
