@@ -1,5 +1,5 @@
 use crate::model::datatypes::{DataRange, FieldType, TypeInfo};
-use crate::parser::{closing_bracket, open_bracket, ws_sep_colon, ParseResult, Span};
+use crate::parser::{closing_bracket, open_bracket, ParseResult, Span};
 
 use nom::branch::alt;
 use nom::bytes::complete::tag;
@@ -13,7 +13,7 @@ pub fn type_info(input: Span) -> ParseResult<TypeInfo> {
     context(
         "type info",
         map(
-            separated_pair(type_identifier, ws_sep_colon, opt(range_identifier)),
+            tuple((type_identifier, opt(range_identifier))),
             |(typ, rng)| TypeInfo {
                 data_type: typ,
                 range: rng,
@@ -116,5 +116,19 @@ mod test {
         let (_, actual) = range_identifier(Span::new("(1 until 1000)")).unwrap();
 
         assert_eq!(actual, expected)
+    }
+
+    #[test]
+    fn test_type_info() {
+        let expect = TypeInfo {
+            data_type: FieldType::Int,
+            range: Some(DataRange {
+                start: 1.0,
+                end: 1000.0,
+            }),
+        };
+        let (_, actual) = type_info(Span::new("int(1 until 1000)")).unwrap();
+
+        assert_eq!(actual, expect)
     }
 }
